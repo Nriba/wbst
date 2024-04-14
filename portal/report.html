@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nirbra Report Portal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        h1 {
+            font-size: 24px;
+            margin-top: 50px;
+        }
+        form {
+            margin-top: 20px;
+            text-align: left;
+            width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        input[type="text"],
+        input[type="email"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: vertical;
+        }
+        textarea {
+            height: 150px;
+        }
+        label {
+            font-weight: bold;
+        }
+        .required {
+            color: red;
+            vertical-align: super;
+            font-size: smaller;
+        }
+        p {
+            margin-top: 5px;
+            margin-bottom: 15px;
+            font-size: smaller;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Nirbra Report Portal</h1>
+    <form id="reportForm">
+        <label for="fullname">Full Name <span class="required">*</span></label><br>
+        <input type="text" id="fullname" name="fullname" placeholder="Enter your full name (up to 50 characters)" maxlength="50" required><br>
+        
+        <label for="email">Your Email <span class="required">*</span></label><br>
+        <input type="email" id="email" name="email" placeholder="Enter your email (up to 75 characters)" maxlength="75" required><br>
+        
+        <label for="category">Category <span class="required">*</span></label><br>
+        <select id="category" name="category" required>
+            <option value="" disabled selected>Select a category</option>
+            <option value="Fraud">Fraud</option>
+            <option value="Scam">Scam</option>
+            <option value="Discord User/Server">Discord User/Server</option>
+            <option value="Phishing">Phishing</option>
+            <option value="IECloud File">IECloud File</option>
+            <option value="Other">Other</option>
+        </select><br>
+        
+        <div id="discordField" style="display: none;">
+            <label for="discordId">Discord ID or Server Link <span class="required">*</span></label><br>
+            <input type="text" id="discordId" name="discordId" placeholder="Enter Discord ID or Server Link"><br>
+        </div>
+        
+        <div id="iecloudField" style="display: none;">
+            <label for="iecloudLink">IECloud File Link <span class="required">*</span></label><br>
+            <input type="text" id="iecloudLink" name="iecloudLink" placeholder="Enter IECloud File Link"><br>
+        </div>
+        
+        <label for="evidence">Links with Evidence <span class="required">*</span></label><br>
+        <input type="text" id="evidence" name="evidence" placeholder="Separate links with commas or spaces" required><br>
+        <p>Please separate the links with commas or spaces.</p>
+        
+        <label for="title">Title of Reason <span class="required">*</span></label><br>
+        <input type="text" id="title" name="title" placeholder="Enter the title (up to 45 characters)" maxlength="45" required><br>
+        
+        <label for="explanation">Explanation <span class="required">*</span> (max 500 characters)</label><br>
+        <textarea id="explanation" name="explanation" maxlength="500" placeholder="Enter your explanation" required></textarea>
+        <p id="charCount">500 characters remaining</p><br>
+        
+        <label for="shareData">
+            <input type="checkbox" id="shareData" name="shareData"> Share my data with other agencies
+        </label><br>
+        <p>Depending on the report, your data may be shared with government agencies.</p>
+        
+        <label for="terms">
+            <input type="checkbox" id="terms" name="terms" required> I agree to the terms and conditions from CubieCloud BR & Nirbra <span class="required">*</span>
+        </label><br>
+        
+        <label for="addToPortal">
+            <input type="checkbox" id="addToPortal" name="addToPortal" checked disabled> Add this report to the transfer portal <span class="required">*</span>
+        </label><br>
+        <p>Your name will not be exposed.</p>
+        
+        <button type="button" id="submitButton">Submit</button>
+    </form>
+
+    <script>
+        document.getElementById('category').addEventListener('change', function() {
+            var category = this.value;
+            var discordField = document.getElementById('discordField');
+            var iecloudField = document.getElementById('iecloudField');
+            if (category === 'Discord User/Server') {
+                discordField.style.display = 'block';
+                iecloudField.style.display = 'none';
+            } else if (category === 'IECloud File') {
+                discordField.style.display = 'none';
+                iecloudField.style.display = 'block';
+            } else {
+                discordField.style.display = 'none';
+                iecloudField.style.display = 'none';
+            }
+        });
+
+        document.getElementById('submitButton').addEventListener('click', function() {
+            var form = document.getElementById('reportForm');
+            var formData = new FormData(form);
+            var isValid = form.checkValidity();
+            if (isValid) {
+                var data = {};
+                formData.forEach(function(value, key){
+                    data[key] = value;
+                });
+                var shareData = document.getElementById('shareData').checked;
+                var terms = document.getElementById('terms').checked;
+                var addToPortal = document.getElementById('addToPortal').checked;
+                data['shareData'] = shareData;
+                data['terms'] = terms;
+                data['addToPortal'] = addToPortal;
+                var jsonData = JSON.stringify(data);
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', 'https://cubie.com.br/nirbra/report');
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        window.location.href = 'https://cubie.com.br/nirbra/thankyou';
+                    } else {
+                        alert('An error occurred. Please try again later.');
+                    }
+                };
+                xhr.send(jsonData);
+            } else {
+                alert('Please fill in all required fields.');
+            }
+        });
+    </script>
+</body>
+</html>
