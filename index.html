@@ -10,11 +10,6 @@
     .navbar {
       background-color: #000;
     }
-    .navbar-brand {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-    }
     footer {
       background-color: #000;
       color: #fff;
@@ -29,13 +24,36 @@
     .footer-contact li {
       margin-bottom: 10px;
     }
+    .logo img {
+      height: 50px;
+      display: block;
+      margin: 0 auto;
+    }
   </style>
 </head>
 <body>
 
   <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
-      <a class="navbar-brand" href="/"><img src="https://content.cubie.com.br/nirbra/nirbra.png" alt="Nirbra" style="height: 50px"></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="navbar-brand logo">
+        <a href="/">
+          <img src="https://content.cubie.com.br/nirbra/nirbra.png" alt="Nirbra">
+        </a>
+      </div>
+      
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://cubie.com.br/nirbra/report"><i class="fas fa-exclamation-circle"></i> Make a Report</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://cubie.cloud/suporte"><i class="fas fa-envelope"></i> Contact Cubie</a>
+          </li>
+        </ul>
+      </div>
     </div>
   </nav>
 
@@ -56,13 +74,13 @@
         <h3>Make a Difference with Us</h3>
         <p>Help us by reporting fraud, scams, phishing, and others on our portal. We will take all possible measures for your case. We act efficiently and quickly.</p>
       </div>
-<div class="col-md-4">
-  <h3>Services</h3>
-  <ul>
-    <li><a href="https://cubie.com.br/nirbra/report">Make a Report</a></li>
-    <li><a href="https://cubie.com.br/nirbra">Transparency Portal</a></li>
-  </ul>
-</div>
+      <div class="col-md-4">
+        <h3>Services</h3>
+        <ul>
+          <li><a href="https://cubie.com.br/nirbra/report">Make a Report</a></li>
+          <li><a href="https://cubie.com.br/nirbra">Transparency Portal</a></li>
+        </ul>
+      </div>
     </div>
   </div>
 
