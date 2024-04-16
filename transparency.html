@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nirbra Transparency Portal | CubieCloud</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .logo h1 {
+            margin: 0;
+            font-size: 28px;
+            color: #333;
+        }
+        .logo i {
+            font-size: 14px;
+            color: #666;
+        }
+        .warning {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .warning p {
+            margin: 0;
+            color: #f44336;
+        }
+        .color-explanation {
+            text-align: justify;
+            margin-bottom: 20px;
+        }
+        .color-explanation strong {
+            color: #333;
+        }
+        .status-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .status {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 10px;
+            line-height: 100px;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .status span {
+            display: block;
+        }
+        .green {
+            background-color: green;
+            color: white;
+        }
+        .yellow {
+            background-color: yellow;
+            color: black;
+        }
+        .orange {
+            background-color: orange;
+            color: white;
+        }
+        .red {
+            background-color: red;
+            color: white;
+        }
+        .info {
+            text-align: center;
+        }
+        .info ul {
+            padding: 0;
+            list-style: none;
+            margin: 0;
+        }
+        .info ul li {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .info a {
+            color: #007bff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <h1>Nirbra Transparency Portal</h1>
+            <i>Powered by <a href="https://cubie.com.br">CubieCloud</a></i>
+        </div>
+        <div class="warning">
+            <p>The data of who reports are anonymous. We do not display/expose complete information about cases.</p>
+        </div>
+        <div class="color-explanation">
+            <p><strong>Color Explanations:</strong></p>
+            <p><span class="green">Green:</span> Cases concluded</p>
+            <p><span class="yellow">Yellow:</span> Cases open</p>
+            <p><span class="orange">Orange:</span> Cases being resolved</p>
+            <p><span class="red">Red:</span> Cases not considered</p>
+        </div>
+        <div class="status-container">
+            <div class="status green"><span>?</span></div>
+            <div class="status yellow"><span>?</span></div>
+            <div class="status orange"><span>?</span></div>
+            <div class="status red"><span>?</span></div>
+        </div>
+        <div class="info">
+            <ul>
+                <li><a href="https://nirbra.com/report">Make a Report</a></li>
+                <li><a href="https://cubie.cloud/support">Contact Support</a></li>
+            </ul>
+            <div class="ft">
+                <footer>Nirbra © 2024</footer>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('https://cubie.com.br/nirbra/statistics')
+                .then(response => response.json())
+                .then(data => {
+                    const resolved = data.resolved !== undefined ? data.resolved : '?';
+                    const open = data.open !== undefined ? data.open : '?';
+                    const progress = data.progress !== undefined ? data.progress : '?';
+                    const ignored = data.ignored !== undefined ? data.ignored : '?';
+                    
+                    const greenStatus = document.querySelector('.status.green span');
+                    const yellowStatus = document.querySelector('.status.yellow span');
+                    const orangeStatus = document.querySelector('.status.orange span');
+                    const redStatus = document.querySelector('.status.red span');
+                    
+                    greenStatus.textContent = resolved;
+                    yellowStatus.textContent = open;
+                    orangeStatus.textContent = progress;
+                    redStatus.textContent = ignored;
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    const statusElements = document.querySelectorAll('.status span');
+                    statusElements.forEach(element => {
+                        element.textContent = '?';
+                    });
+                });
+        });
+    </script>
+</body>
+</html>
